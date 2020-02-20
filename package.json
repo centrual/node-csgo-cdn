@@ -19,7 +19,7 @@
     "simple-vdf": "^1.1.0",
     "steam-totp": "^2.0.1",
     "steam-user": "^4.12.3",
-    "vpk": "0.2.0",
+    "vpk": "git+https://github.com/centrual/node-vpk.git",
     "winston": "^3.0.0-rc1"
   },
   "author": {
