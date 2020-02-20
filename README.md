@@ -65,8 +65,9 @@ Example URL: https://steamcdn-a.akamaihd.net/apps/730/icons/econ/stickers/cologn
 
 #### See example.js
 ```javascript
+```javascript
 const SteamUser = require('steam-user');
-const csgoCDN = require('csgo-cdn');
+const csgoCDN = require('index');
 
 const user = new SteamUser();
 const cdn = new csgoCDN(user, {logLevel: 'debug'});
