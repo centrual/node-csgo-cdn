@@ -4,6 +4,7 @@ Retrieves the Steam CDN URLs for CS:GO Item Images from their `market_hash_name`
 
 Can retrieve CDN images for:
 * Stickers
+* Characters
 * Graffiti (without tint)
 * Weapons (and doppler phases)
 * Music Kits
@@ -27,7 +28,7 @@ Can retrieve CDN images for:
     * [phase](https://github.com/Step7750/node-csgo-cdn#phase)
   * [Events](https://github.com/Step7750/node-csgo-cdn#events)
     * [ready](https://github.com/Step7750/node-csgo-cdn#ready)
-    
+
 
 ## Why?
 
@@ -95,7 +96,7 @@ cdn.on('ready', () => {
         statusIcons: true, // whether to obtain the vpk for status icons
     }
     ```
-    
+
 ### getItemNameURL(marketHashName, phase)
 
 * `marketHashName` - The market hash name of an item (ex. "Sticker | Robo" or "AWP | Redline (Field-Tested)")

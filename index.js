@@ -11,6 +11,7 @@ const defaultConfig = {
     updateInterval: 30000,
     stickers: true,
     graffiti: true,
+    characters: true,
     musicKits: true,
     cases: true,
     tools: true,
@@ -23,6 +24,7 @@ const wears = ['Factory New', 'Minimal Wear', 'Field-Tested', 'Well-Worn', 'Batt
 const neededDirectories = {
     stickers: 'resource/flash/econ/stickers',
     graffiti: 'resource/flash/econ/stickers/default',
+    characters: 'resource/flash/econ/characters',
     musicKits: 'resource/flash/econ/music_kits',
     cases: 'resource/flash/econ/weapon_cases',
     tools: 'resource/flash/econ/tools',
@@ -435,7 +437,7 @@ class CSGOCdn extends EventEmitter {
         const fileName = large ? `${name}_large.png` : `${name}.png`;
         const path = this.vpkFiles.find((t) => t.endsWith(fileName));
 
-        if (path) return this.getPathURL(path);
+        if (path) return this.getPathURL(path).replace('\r', '');
     }
 
     /**
@@ -475,7 +477,7 @@ class CSGOCdn extends EventEmitter {
         // Get the image url
         const cdnName = `${weaponName}_${skinName}`;
 
-        return this.itemsGameCDN[cdnName];
+        return this.itemsGameCDN[cdnName].replace('\r', '');
     }
 
     /**
@@ -543,7 +545,16 @@ class CSGOCdn extends EventEmitter {
 
         if (!match) return;
 
-        const stickerName = match[1];
+        let stickerName = match[1];
+
+        const pharantesisWithSpaceIndex = stickerName.indexOf(' (');
+        const pharantesisWithoutSpaceIndex = stickerName.indexOf('(');
+
+        if( pharantesisWithSpaceIndex === -1 && pharantesisWithoutSpaceIndex > -1 ) {
+            const stickerNameArr = stickerName.split('');
+            stickerNameArr.splice(pharantesisWithoutSpaceIndex, 0, ' ');
+            stickerName = stickerNameArr.join('');
+        }
 
         for (const tag of this.csgoEnglish['inverted'][stickerName] || []) {
             const stickerTag = `#${tag}`;
@@ -614,7 +625,7 @@ class CSGOCdn extends EventEmitter {
                 const url = this.getStickerURL(kit.sticker_material, true);
 
                 if (url) {
-                    return url;
+                    return url.replace('\r', '');
                 }
             }
         }
@@ -713,7 +724,7 @@ class CSGOCdn extends EventEmitter {
                     const path = (paintKit ? `${weaponClass}_${paintKit}` : weaponClass).toLowerCase();
 
                     if (this.itemsGameCDN[path]) {
-                        return this.itemsGameCDN[path];
+                        return this.itemsGameCDN[path].replace('\r', '');
                     }
                 }
             }
@@ -753,7 +764,7 @@ class CSGOCdn extends EventEmitter {
             const url = this.getPathURL(path);
 
             if (url) {
-                return url;
+                return url.replace('\r', '');
             }
         }
     }
@@ -795,6 +806,10 @@ class CSGOCdn extends EventEmitter {
         }
         else {
             // Other in items
+            if( marketHashName.indexOf('(Holo-Foil)') > -1 ) {
+                marketHashName = marketHashName.replace('(Holo-Foil)', '(Holo/Foil)');
+            }
+
             for (const t of this.csgoEnglish['inverted'][marketHashName] || []) {
                 const tag = `#${t.toLowerCase()}`;
                 const items = this.itemsGame.items;
@@ -827,7 +842,7 @@ class CSGOCdn extends EventEmitter {
                 const url = this.getPathURL(path);
 
                 if (url) {
-                    return url;
+                    return url.replace('\r', '');
                 }
             }
         }
